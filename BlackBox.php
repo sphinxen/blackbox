@@ -1,8 +1,8 @@
 <?php
 class BlackBox {
     public function url($var, $val = false, $add_var = false) {
-        $get = $_GET;
-        $get = $this->array_map_recursive("urldecode", $get);
+        $get = $this->array_map_recursive("urldecode", $_GET);
+
         if ($add_var) {
             $get = $get + $add_var;
         }
@@ -51,16 +51,18 @@ class BlackBox {
 
     }
 
-
-    private function array_map_recursive($callback, $array) {
-        foreach ($array as $key => $value) {
-            if (is_array($array[$key])) {
-                $array[$key] = $this->array_map_recursive($callback, $array[$key]);
-            } else {
-                $array[$key] = call_user_func($callback, $array[$key]);
-            }
+    /**
+     * @param $callable
+     * @param $array
+     * @return array|mixed
+     */
+    private function array_map_recursive($callable, $array) {
+        if (is_array($array)) {
+            return array_map(function($array) use ($callable) {
+                return $this->array_map_recursive($callable, $array);
+            }, $array);
         }
-        return $array;
+        return call_user_func($callable, $array);
     }
 
 
