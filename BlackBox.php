@@ -1,49 +1,59 @@
 <?php
 class BlackBox {
-    public function url($var, $val = false, $add_var = false) {
+    /**
+     * Get the requested URL and update the query arguments
+     *
+     *
+     *
+     * @param array|mixed $arguments URL argument key
+     * @param array|mixed $values URL argument value
+     * @param array|mixed $additionalArguments Additional arguments to add to the URL
+     * @return string
+     */
+    public function url($arguments, $values = false, $extraArguments = false) {
         $get = $this->array_map_recursive("urldecode", $_GET);
 
-        if ($add_var) {
-            $get = $get + $add_var;
+        if ($extraArguments) {
+            $get = $get + $extraArguments;
         }
 
         $http = $this->is_ssl() ? "https://" : "http://";
 
-        if (is_array($var)) {
-            foreach ($var as $i => $v) {
+        if (is_array($arguments)) {
+            foreach ($arguments as $i => $v) {
                 if (isset($get[$v])) {
-                    if ($val == false || $get[$v] == $val[$i] || $val[$i] == "") {
+                    if ($values == false || $get[$v] == $values[$i] || $values[$i] == "") {
                         unset($get[$v]);
                     }
                     else {
-                        $get[$v] = $val[$i];
+                        $get[$v] = $values[$i];
                     }
                 }
                 else {
-                    if ($val == false) {
+                    if ($values == false) {
 
                     }
                     else {
-                        $get = $get + array($v => $val[$i]);
+                        $get = $get + array($v => $values[$i]);
                     }
                 }
             }
         }
         else {
-            if (isset($get[$var])) {
-                if ($get[$var] == $val || $val == "" || $val == false) {
-                    unset($get[$var]);
+            if (isset($get[$arguments])) {
+                if ($get[$arguments] == $values || $values == "" || $values == false) {
+                    unset($get[$arguments]);
                 }
                 else {
-                    $get[$var] = $val;
+                    $get[$arguments] = $values;
                 }
             }
             else {
-                if ($val == false) {
+                if ($values == false) {
 
                 }
                 else {
-                    $get = $get + array($var => $val);
+                    $get = $get + array($arguments => $values);
                 }
             }
         }
