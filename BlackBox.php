@@ -1,13 +1,13 @@
 <?php
 class BlackBox {
     /**
-     * Get the requested URL and update the query arguments
+     * Generate URL with the requested URL and optional alternate arguments
      *
      *
      *
-     * @param array|mixed $arguments URL argument key
-     * @param array|mixed $values URL argument value
-     * @param array|mixed $additionalArguments Additional arguments to add to the URL
+     * @param mixed $keys Query argument key to modify. Only existing arguments will be affected.
+     * @param mixed $values New value of the query argument key. False, empty or identical value will result in removal of query argument.
+     * @param array $extra_arguments Additional new arguments to add to the query
      * @return string
      */
     public function url($arguments, $values = [], $extraArguments = []) {
