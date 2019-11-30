@@ -51,19 +51,16 @@ class BlackBox {
     }
 
 
+    /**
+     * @return bool
+     */
     private function is_ssl() {
-        if (isset($_SERVER['HTTPS'])) {
-            if ('on' == strtolower($_SERVER['HTTPS'])) {
-                return true;
-            }
-
-            if ('1' == $_SERVER['HTTPS']) {
-                return true;
-            }
-        }
-        else if (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+        if (isset($_SERVER['HTTPS']) && filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN))
             return true;
-        }
+
+        if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
+            return true;
+
         return false;
     }
 
