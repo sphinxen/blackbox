@@ -10,12 +10,12 @@ class BlackBox {
      * @param array|mixed $additionalArguments Additional arguments to add to the URL
      * @return string
      */
-    public function url($arguments, $values = false, $extraArguments = false) {
-        $get = $this->array_map_recursive("urldecode", $_GET);
+    public function url($arguments, $values = [], $extraArguments = []) {
+        $arguments = (array) $arguments;
+        $values = (array) $values;
+        $extraArguments = (array) $extraArguments;
 
-        if ($extraArguments) {
-            $get = $get + $extraArguments;
-        }
+        $get = $this->array_map_recursive("urldecode", $_GET) + $extraArguments;;
 
         $http = $this->is_ssl() ? "https://" : "http://";
 
