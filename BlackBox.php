@@ -3,7 +3,8 @@ class BlackBox {
     /**
      * Generate URL with the requested URL and optional alternate arguments
      *
-     *
+     * Generates a URL-encoded string with alternated query. It is possible to change and/or remove existing values from
+     * the query.
      *
      * @param mixed $keys Query argument key to modify. Only existing arguments will be affected.
      * @param mixed $values New value of the query argument key. False, empty or identical value will result in removal of query argument.
