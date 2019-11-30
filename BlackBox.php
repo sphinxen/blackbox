@@ -15,7 +15,10 @@ class BlackBox {
         $values = (array) $values ?: [];
         $query = (array) $_GET ?: [];
 
-        $query = $this->array_map_recursive("urldecode", $query);
+        $query = array_combine(
+            $this->array_map_recursive("urldecode", array_keys($query)),
+            $this->array_map_recursive("urldecode", $query)
+        );
 
         foreach ($keys as $index => $key) {
             if(isset($query[$key])) {
@@ -30,7 +33,7 @@ class BlackBox {
         $url =  $this->is_ssl() ? "https://" : "http://";
         $url .= $_SERVER['HTTP_HOST'];
         $url .= $_SERVER['SCRIPT_NAME'];
-        $url .= $query ? '?' . urldecode(http_build_query($query + $extra_arguments)) : '';
+        $url .= $query ? '?' . http_build_query($query + $extra_arguments) : '';
 
         return $url;
     }
