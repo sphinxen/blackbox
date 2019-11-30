@@ -17,8 +17,6 @@ class BlackBox {
 
         $get = $this->array_map_recursive("urldecode", $_GET) + $extraArguments;;
 
-        $http = $this->is_ssl() ? "https://" : "http://";
-
         foreach ($arguments as $key => $argument) {
             if (isset($get[$argument]) && (empty($values[$key]) || $get[$argument] == $values[$key])) {
                 unset($get[$argument]);
