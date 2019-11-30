@@ -1,5 +1,6 @@
 <?php
 class BlackBox {
+
     /**
      * Generate URL with the requested URL and optional alternate arguments
      *
@@ -7,7 +8,8 @@ class BlackBox {
      * the query.
      *
      * @param mixed $query_keys Query argument key to modify. Only existing arguments will be affected.
-     * @param mixed $new_values New value of the query argument key. False, empty or identical value will result in removal of query argument.
+     * @param mixed $new_values New value of the query argument key. False, empty or identical to existing value will
+     * result in removal of query argument.
      * @param array $extra_query_data Additional query to add. An associative array with query name and value.
      * @return string
      */
@@ -26,12 +28,10 @@ class BlackBox {
             }
         }
 
-        $url =  $this->is_ssl() ? "https://" : "http://";
-        $url .= $_SERVER['HTTP_HOST'];
-        $url .= $_SERVER['SCRIPT_NAME'];
-        $url .= $query ? '?' . http_build_query($query + $extra_query_data) : '';
-
-        return $url;
+        return  ($this->is_ssl() ? "https://" : "http://")
+            . $_SERVER['HTTP_HOST']
+            . $_SERVER['SCRIPT_NAME']
+            . ($query ? '?' . http_build_query($query + $extra_query_data) : '');
     }
 
 
