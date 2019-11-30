@@ -27,8 +27,13 @@ class BlackBox {
                 $get[$argument] = $values[$key];
             }
         }
-        return $http . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'] . "?" . urldecode(http_build_query($get));
 
+        $url =  $this->is_ssl() ? "https://" : "http://";
+        $url .= $_SERVER['HTTP_HOST'];
+        $url .= $_SERVER['SCRIPT_NAME'];
+        $url .= empty($get) ?: '?' . urldecode(http_build_query($get));
+
+        return $url;
     }
 
     /**
