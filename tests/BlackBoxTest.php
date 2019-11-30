@@ -117,49 +117,6 @@ final class BlackBoxTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider providerURLEncodedInput
-     */
-    public function testURLEncodedInputQueryData($query, $arguments, $expected)
-    {
-        $_GET = $query;
-
-        $expected = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?{$expected}";
-        $actual = (new BlackBox())->url(...$arguments);
-
-        $this->assertEquals(
-            $expected,
-            $actual,
-            __FUNCTION__ . "Expected {$expected} but resulted in {$actual}"
-        );
-    }
-
-    public function testNestedQueryInputData()
-    {
-        $_GET = [
-            'list' => '%26test',
-            'page' => 2,
-            'biz' => [
-                'foo' => 'bar',
-                'baz' => '%264'
-            ]
-        ];
-
-        $arguments = [
-            ['list', 'page'],
-            ['&test', 3]
-        ];
-
-        $expected = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?page=3&biz%5Bfoo%5D=bar&biz%5Bbaz%5D=%264";
-        $actual = (new BlackBox())->url(...$arguments);
-
-        $this->assertEquals(
-            $expected,
-            $actual,
-            __FUNCTION__ . "Expected {$expected} but resulted in {$actual}"
-        );
-    }
-
     public function tearDown()
     {
         $_SERVER['HTTPS'] = false;
@@ -252,22 +209,6 @@ final class BlackBoxTest extends TestCase
                 0,
                 'foo=1&bar=2',
             ]
-        ];
-    }
-
-    public function providerURLEncodedInput()
-    {
-        return [
-            [
-                ['list' => '%26test', 'page' => 2, 'foo' => 'bar'],
-                [['list', 'page'], ['&customer', 3]],
-                'list=%26customer&page=3&foo=bar'
-            ],
-            [
-                ['%24list' => 'test', 'page' => 2, 'foo' => 'bar'],
-                [['$list', 'page'], ['&customer', 2]],
-                '%24list=%26customer&foo=bar'
-            ],
         ];
     }
 

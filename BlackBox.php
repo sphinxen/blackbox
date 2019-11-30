@@ -14,12 +14,7 @@ class BlackBox {
     public function url($keys, $values = false, array $extra_arguments = []) {
         $keys = (array) $keys;
         $values = (array) $values ?: [];
-        $query = (array) $_GET ?: [];
-
-        $query = array_combine(
-            $this->array_map_recursive("urldecode", array_keys($query)),
-            $this->array_map_recursive("urldecode", $query)
-        );
+        $query = $_GET;
 
         foreach ($keys as $index => $key) {
             if(isset($query[$key])) {
@@ -37,20 +32,6 @@ class BlackBox {
         $url .= $query ? '?' . http_build_query($query + $extra_arguments) : '';
 
         return $url;
-    }
-
-    /**
-     * @param $callable
-     * @param $array
-     * @return array|mixed
-     */
-    private function array_map_recursive($callable, $array) {
-        if (is_array($array)) {
-            return array_map(function($array) use ($callable) {
-                return $this->array_map_recursive($callable, $array);
-            }, $array);
-        }
-        return call_user_func($callable, $array);
     }
 
 
