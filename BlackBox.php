@@ -20,7 +20,7 @@ class BlackBox {
         $http = $this->is_ssl() ? "https://" : "http://";
 
         foreach ($arguments as $key => $argument) {
-            if (empty($values[$key]) || $get[$argument] == $values[$key]) {
+            if (isset($get[$argument]) && (empty($values[$key]) || $get[$argument] == $values[$key])) {
                 unset($get[$argument]);
             }
             else {
