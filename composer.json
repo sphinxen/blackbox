@@ -7,9 +7,10 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "psr-4": {
+            "BlackBox\\": "src/"
+
+        }
     },
     "require": {},
     "require-dev": {

@@ -98,7 +98,7 @@ $checks = [
   ],
 ];
 
-$blackBox = new BlackBox();
+$blackBox = new Blackbox\BlackBox();
 $testsTotal = count($checks);
 $testsOk = 0;
 

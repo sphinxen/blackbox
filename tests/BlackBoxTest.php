@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
+namespace Blackbox\Tests;
+
 use PHPUnit\Framework\TestCase;
+use BlackBox\BlackBox;
 
 final class BlackBoxTest extends TestCase
 {
