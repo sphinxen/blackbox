@@ -19,42 +19,12 @@ class BlackBox {
 
         $http = $this->is_ssl() ? "https://" : "http://";
 
-        if (is_array($arguments)) {
-            foreach ($arguments as $i => $v) {
-                if (isset($get[$v])) {
-                    if ($values == false || $get[$v] == $values[$i] || $values[$i] == "") {
-                        unset($get[$v]);
-                    }
-                    else {
-                        $get[$v] = $values[$i];
-                    }
-                }
-                else {
-                    if ($values == false) {
-
-                    }
-                    else {
-                        $get = $get + array($v => $values[$i]);
-                    }
-                }
-            }
-        }
-        else {
-            if (isset($get[$arguments])) {
-                if ($get[$arguments] == $values || $values == "" || $values == false) {
-                    unset($get[$arguments]);
-                }
-                else {
-                    $get[$arguments] = $values;
-                }
+        foreach ($arguments as $key => $argument) {
+            if (empty($values[$key]) || $get[$argument] == $values[$key]) {
+                unset($get[$argument]);
             }
             else {
-                if ($values == false) {
-
-                }
-                else {
-                    $get = $get + array($arguments => $values);
-                }
+                $get[$argument] = $values[$key];
             }
         }
         return $http . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'] . "?" . urldecode(http_build_query($get));
