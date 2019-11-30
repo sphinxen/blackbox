@@ -15,21 +15,21 @@ class BlackBox {
         $values = (array) $values;
         $extraArguments = (array) $extraArguments;
 
-        $get = $this->array_map_recursive("urldecode", $_GET) + $extraArguments;;
+        $requestData = $this->array_map_recursive("urldecode", $_GET) + $extraArguments;;
 
         foreach ($arguments as $key => $argument) {
-            if (isset($get[$argument]) && (empty($values[$key]) || $get[$argument] == $values[$key])) {
-                unset($get[$argument]);
+            if (isset($requestData[$argument]) && (empty($values[$key]) || $requestData[$argument] == $values[$key])) {
+                unset($requestData[$argument]);
             }
             else {
-                $get[$argument] = $values[$key];
+                $requestData[$argument] = $values[$key];
             }
         }
 
         $url =  $this->is_ssl() ? "https://" : "http://";
         $url .= $_SERVER['HTTP_HOST'];
         $url .= $_SERVER['SCRIPT_NAME'];
-        $url .= empty($get) ?: '?' . urldecode(http_build_query($get));
+        $url .= empty($requestData) ?: '?' . urldecode(http_build_query($requestData));
 
         return $url;
     }
