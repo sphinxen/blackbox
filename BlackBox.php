@@ -10,26 +10,27 @@ class BlackBox {
      * @param array $extra_arguments Additional new arguments to add to the query
      * @return string
      */
-    public function url($arguments, $values = [], $extraArguments = []) {
-        $arguments = (array) $arguments;
-        $values = (array) $values;
-        $extraArguments = (array) $extraArguments;
+    public function url($keys, $values = false, array $extra_arguments = []) {
+        $keys = (array) $keys;
+        $values = (array) $values ?: [];
+        $query = (array) $_GET ?: [];
 
-        $requestData = $this->array_map_recursive("urldecode", $_GET) + $extraArguments;;
+        $query = $this->array_map_recursive("urldecode", $query);
 
-        foreach ($arguments as $key => $argument) {
-            if (isset($requestData[$argument]) && (empty($values[$key]) || $requestData[$argument] == $values[$key])) {
-                unset($requestData[$argument]);
-            }
-            else {
-                $requestData[$argument] = $values[$key];
+        foreach ($keys as $index => $key) {
+            if(isset($query[$key])) {
+                if ((empty($values[$index]) || $query[$key] == $values[$index])) {
+                    unset($query[$key]);
+                } else {
+                    $query[$key] = $values[$index];
+                }
             }
         }
 
         $url =  $this->is_ssl() ? "https://" : "http://";
         $url .= $_SERVER['HTTP_HOST'];
         $url .= $_SERVER['SCRIPT_NAME'];
-        $url .= empty($requestData) ?: '?' . urldecode(http_build_query($requestData));
+        $url .= $query ? '?' . urldecode(http_build_query($query + $extra_arguments)) : '';
 
         return $url;
     }
