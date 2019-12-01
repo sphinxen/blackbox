@@ -6,11 +6,12 @@ class BlackBox {
     /**
      * Generate URL with the requested URL and optional alternate arguments
      *
-     * Generates a URL-encoded string with alternated query. It is possible to change and/or remove existing values from
-     * the query.
+     * Generates a URL-encoded string with alternated query. It is possible to change change or remove existing values
+     * from the query buy sending in existing key(s) to search for and replacement value(s). Additional queries could be
+     * inserted as an associated array for the third argument.
      *
-     * @param mixed $query_keys Query argument key to modify. Only existing arguments will be affected.
-     * @param mixed $new_values New value of the query argument key. False, empty or identical to existing value will
+     * @param mixed $query_keys Query argument key(s) to modify. Could be a string or array of keys. Only existing arguments will be affected.
+     * @param mixed $new_values New value of the query argument key. Coulde be a string och array of values. False, empty or identical to existing value will
      * result in removal of query argument.
      * @param array $extra_query_data Additional query to add. An associative array with query name and value.
      * @return string
