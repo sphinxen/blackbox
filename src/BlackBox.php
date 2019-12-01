@@ -21,6 +21,7 @@ class BlackBox {
         $new_values = (array) $new_values;
         $query = $_GET;
 
+        // Loop through the keys and perform a search an replace of values in the query
         foreach ($query_keys as $index => $key) {
             if(isset($query[$key])) {
                 if ((empty($new_values[$index]) || $query[$key] == $new_values[$index])) {
@@ -31,10 +32,13 @@ class BlackBox {
             }
         }
 
+        // Joining the extra query data to the query
+        $query += $extra_query_data;
+
         return  ($this->is_ssl() ? "https://" : "http://")
             . $_SERVER['HTTP_HOST']
             . $_SERVER['SCRIPT_NAME']
-            . ($query ? '?' . http_build_query($query + $extra_query_data) : '');
+            . (empty($query) ? '' : '?' . http_build_query($query));
     }
 
 

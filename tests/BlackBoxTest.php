@@ -32,17 +32,19 @@ final class BlackBoxTest extends TestCase
     {
         $_GET = $query;
 
-        $url = (new BlackBox())->url(...$arguments);
+        if (is_array($query)) {
+            $expected = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}" . (empty($expected) ? '' : '?' . $expected);
+            $actual = (new BlackBox())->url(...$arguments);
 
-        $actual = parse_url($url, PHP_URL_QUERY);
-        $expected = parse_url($expected, PHP_URL_QUERY);
-
-        $this->assertEmpty($query);
-        $this->assertEquals(
-            $expected,
-            $actual,
-            __FUNCTION__ . "Expected {$expected} but resulted in {$actual}"
-        );
+            $this->assertEquals(
+                $expected,
+                $actual,
+                __FUNCTION__ . "Expected {$expected} but resulted in {$actual}"
+            );
+        } else {
+            $this->expectException(\Error::class);
+            (new BlackBox())->url(...$arguments);
+        }
     }
 
     /**
@@ -183,6 +185,11 @@ final class BlackBoxTest extends TestCase
             ],
             [
                 null,
+                ['foo', 2, ['baz' => 3]],
+                'baz=3',
+            ],
+            [
+                [],
                 ['foo', 2, ['baz' => 3]],
                 'baz=3',
             ]
